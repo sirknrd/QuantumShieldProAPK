@@ -1,0 +1,142 @@
+#:kivy 2.3.0
+
+<ColoredCard@BoxLayout>:
+    orientation: "vertical"
+    padding: dp(12)
+    spacing: dp(6)
+    size_hint_y: None
+    height: self.minimum_height
+    canvas.before:
+        Color:
+            rgba: self.bg_rgba if hasattr(self, "bg_rgba") else (0.08, 0.10, 0.14, 1)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [12, 12, 12, 12]
+        Color:
+            rgba: self.border_rgba if hasattr(self, "border_rgba") else (0.25, 0.28, 0.33, 1)
+        Line:
+            rounded_rectangle: (self.x, self.y, self.width, self.height, 12, 12, 12, 12)
+            width: 1.1
+
+<RootUI>:
+    orientation: "vertical"
+    padding: dp(12)
+    spacing: dp(10)
+    canvas.before:
+        Color:
+            rgba: (0.04, 0.06, 0.08, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        size_hint_y: None
+        height: dp(44)
+        spacing: dp(8)
+        TextInput:
+            id: ticker
+            hint_text: "Ticker (ej: AAPL, BTC-USD)"
+            text: "AAPL"
+            multiline: False
+            write_tab: False
+        Spinner:
+            id: tf
+            text: "1D"
+            values: ["1D", "4H", "1H", "15m"]
+            size_hint_x: None
+            width: dp(110)
+        Button:
+            text: "Actualizar"
+            size_hint_x: None
+            width: dp(120)
+            on_release: root.on_refresh()
+
+    ColoredCard:
+        id: rec_card
+        bg_rgba: (0.10, 0.12, 0.16, 1)
+        border_rgba: (0.35, 0.36, 0.40, 1)
+        Label:
+            id: rec_label
+            text: "RECOMENDACIÓN"
+            color: (0.9, 0.92, 0.95, 0.75)
+            bold: True
+            size_hint_y: None
+            height: self.texture_size[1]
+            halign: "left"
+            text_size: self.size
+        Label:
+            id: rec_value
+            text: "—"
+            color: (0.9, 0.92, 0.95, 1)
+            bold: True
+            font_size: "22sp"
+            size_hint_y: None
+            height: self.texture_size[1]
+            halign: "left"
+            text_size: self.size
+        Label:
+            id: rec_sub
+            text: ""
+            color: (0.9, 0.92, 0.95, 0.75)
+            size_hint_y: None
+            height: self.texture_size[1]
+            halign: "left"
+            text_size: self.size
+
+    BoxLayout:
+        size_hint_y: None
+        height: dp(88)
+        spacing: dp(8)
+        ColoredCard:
+            Label:
+                id: kpi_price
+                text: "Último: —"
+                halign: "left"
+                text_size: self.size
+        ColoredCard:
+            Label:
+                id: kpi_rsi
+                text: "RSI14: —"
+                halign: "left"
+                text_size: self.size
+        ColoredCard:
+            Label:
+                id: kpi_adx
+                text: "ADX14: —"
+                halign: "left"
+                text_size: self.size
+        ColoredCard:
+            Label:
+                id: kpi_atr
+                text: "ATR%: —"
+                halign: "left"
+                text_size: self.size
+
+    ColoredCard:
+        Label:
+            text: "Técnicos multi‑timeframe"
+            bold: True
+            color: (0.9, 0.92, 0.95, 1)
+            size_hint_y: None
+            height: self.texture_size[1]
+            halign: "left"
+            text_size: self.size
+        ScrollView:
+            size_hint_y: None
+            height: dp(260)
+            do_scroll_x: False
+            GridLayout:
+                id: tf_grid
+                cols: 1
+                spacing: dp(6)
+                size_hint_y: None
+                height: self.minimum_height
+
+    Label:
+        id: status
+        text: ""
+        color: (0.9, 0.92, 0.95, 0.75)
+        size_hint_y: None
+        height: self.texture_size[1]
+
